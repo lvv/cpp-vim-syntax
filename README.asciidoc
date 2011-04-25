@@ -1,1 +1,0 @@
-image:screenshot-1.png[]
