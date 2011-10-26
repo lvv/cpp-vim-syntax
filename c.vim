@@ -12,7 +12,7 @@ endif
 " A bunch of useful C keywords
 syn keyword	cStatement	asm
 syn keyword	cLabel		case default
-syn keyword	cConditional	if else switch
+syn keyword	cConditional	if else switch 
 syn keyword	cRepeat		while for do break continue goto 
 
 syn keyword	cTodo		contained TODO FIXME XXX

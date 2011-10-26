@@ -95,6 +95,7 @@ hi cppTemplate	ctermfg=100
 "syn keyword	cRepeat		goto break continue
 "syn clear	cRepeat
 "syn keyword	cRepeat		for while goto break continue
+syn keyword	cRepeat		FOR FORi REP FORitc FORitr
 hi cRepeat	ctermfg=198
 
 hi cConditional ctermfg=214
@@ -110,8 +111,9 @@ syn match	MacroFunction          	"\(^\s*#\s*define\s\+\)\@<=\<\i\+\ze\s*("
 hi MacroFunction	ctermfg=39
 
 """"""""""""""""""""""""""""""" Types
-syn keyword	cType           string vector deque queue vector array list Titerator pair tuple
-syn keyword	cType           stringstream ofstream ifstream  ifstream oftstream  ios_base
+syn keyword	cType           string vector deque queue vector array list T iterator pair tuple set map multiset multimap
+syn keyword	cType           vint vuint vlong vulong dint duint dlong dulong vS dS  S vdouble vfloat ddouble dfloat
+syn keyword	cType           ostream istream stringstream ofstream ifstream  ifstream oftstream  ios_base
 syn match	cType           "\<\(\i\+\(_t\|_rec\|_iterator\|_tag\)\|Q\i\+\)\>\(\s*(\)\@<!"
 syn match	cType           "\<\i\+::type\>"
 syn keyword	cppType		bool wchar_t qreal
@@ -144,7 +146,11 @@ syn match	cppClass              	contains=cStructure   "\(^\s\+\(class\|struct\)
 hi cppBigClass	ctermfg=194
 hi cppClass	ctermfg=194
 
-syn match       Brace                   "{\|}"
+syn match       Assign                   "="
+hi 		Assign			ctermfg=155
+
+syn match       Brace                   "{\|}\|!"
+syn match       cConditional                   "==\|!="
 "hi 		Brace	ctermfg=208
 hi 		Brace	ctermfg=196
 
