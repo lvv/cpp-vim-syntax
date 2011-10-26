@@ -65,7 +65,8 @@ syn keyword	cppStorageClass	static register auto volatile extern const extern ex
 
 
 """"""""""""""""""""""""""""""""" general keywords
-syn keyword	cppStatement	new delete this friend return 
+syn keyword	cppStatement	new delete this friend
+
 hi def link cStatement		Statement
 hi def link cppStatement	Statement
 hi def link cReturn		Statement

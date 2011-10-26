@@ -15,6 +15,9 @@ syn keyword	cLabel		case default
 syn keyword	cConditional	if else switch 
 syn keyword	cRepeat		while for do break continue goto 
 
+syn keyword	cReturn		return
+hi 		cReturn		ctermfg=210
+
 syn keyword	cTodo		contained TODO FIXME XXX
 
 " cCommentGroup allows adding matches for special things in comments
