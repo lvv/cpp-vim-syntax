@@ -147,7 +147,7 @@ syn match	cppClass              	contains=cStructure   "\(^\s\+\(class\|struct\)
 hi cppBigClass	ctermfg=194
 hi cppClass	ctermfg=194
 
-syn match       Assign                   "="
+syn match       Assign                   "=\|+=\|-=\|*=\|/=\|%="
 hi 		Assign			ctermfg=155
 
 syn match       Brace                   "{\|}\|!"
