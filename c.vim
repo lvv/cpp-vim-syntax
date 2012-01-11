@@ -13,10 +13,10 @@ endif
 syn keyword	cStatement	asm
 syn keyword	cLabel		case default
 syn keyword	cConditional	if else switch 
-syn keyword	cRepeat		while for do break continue goto 
+syn keyword	cRepeat		while for do 
 
-syn keyword	cReturn		return
-hi 		cReturn		ctermfg=210
+syn keyword	cJump		goto break continue return
+hi 		cJump		ctermfg=210
 
 "syn keyword	cTodo		contained TODO FIXME XXX
 
@@ -330,6 +330,7 @@ hi def link cLabel		Label
 hi def link cUserLabel		Label
 hi def link cConditional	Conditional
 hi def link cRepeat		Repeat
+hi def link cppRepeat		Repeat
 hi def link cCharacter		Character
 hi def link cSpecialCharacter	cSpecial
 hi def link cNumber		Number

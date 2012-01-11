@@ -1,8 +1,8 @@
 let c_no_curly_error=1
 " Vim syntax file
 " Language:	C++
-" Maintainer:	Ken Shan <ccshan@post.harvard.edu>
-" Last Change:	2002 Jul 15
+" Maintainer:	Leonid Volnitsky <leonid@volnitsky.com>
+" Based on on vim syntax file by Ken Shan
 
 " For version 5.x: Clear all syntax items
 " For version 6.x: Quit when a syntax file was already loaded
@@ -93,9 +93,7 @@ syn match	cppTemplate	"\<template\s*<\(\i\|\d\|\s\|,\)*>"
 syn keyword	cppTemplate	template
 hi cppTemplate	ctermfg=100
 """""""""""""""""""""""""""""""  Statement
-"syn keyword	cRepeat		goto break continue
 "syn clear	cRepeat
-"syn keyword	cRepeat		for while goto break continue
 syn keyword	cRepeat		FOR FORi REP FORitc FORitr
 hi cRepeat	ctermfg=198
 
@@ -112,12 +110,13 @@ syn match	MacroFunction          	"\(^\s*#\s*define\s\+\)\@<=\<\i\+\ze\s*("
 hi MacroFunction	ctermfg=39
 
 """"""""""""""""""""""""""""""" Types
-syn keyword	cType           string vector deque queue vector array list T iterator pair tuple set map multiset multimap
+syn keyword	cType           string vector deque queue vector array list T iterator pair tuple set map multiset multimap unordered_map unordered_set
 syn keyword	cType           vint vuint vlong vulong dint duint dlong dulong vS dS  S vdouble vfloat ddouble dfloat
 syn keyword	cType           ostream istream stringstream ofstream ifstream  ifstream oftstream  ios_base
-syn match	cType           "\<\(\i\+\(_t\|_rec\|_iterator\|_tag\)\|Q\i\+\)\>\(\s*(\)\@<!"
+syn match	cType           "\<\(\i\+\(_t\|_iterator\|_tag\)\|Q\i\+\)\>\(\s*(\)\@<!"
 syn match	cType           "\<\i\+::type\>"
 syn keyword	cppType		bool wchar_t qreal
+syn keyword	cppType		strr
 
 hi cType	ctermfg=72
 hi cType_t	ctermfg=72
@@ -185,4 +184,5 @@ syn match	cppTemplate	contains=cType		"\(^\s*\(\i\|[*& \t<>]\)\+\(\i\+\s*::\s*\)
 hi 		Member		ctermfg=254
 "
 
+syn keyword	cRepeat		ALL itALL pALL  iALL jALL  FOR iFOR jFOR kFOR mFOR tFOR REP ROF LLA
 " vim: ts=8
