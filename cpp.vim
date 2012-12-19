@@ -144,11 +144,15 @@ hi cppBoolean	ctermfg=147
 """""""""""""""""""""""""""""""""
 syn match	cppClass		">\s*\zs\<\(class\|struct\)\>"
 syn match	cppClass		"\(^\s*\zs\<\(class\|struct\)\)\>"
+hi cppClass	ctermfg=185
+
+syn match	cppClassName		"\(>\s*\<\(class\|struct\)\>\s*\)\@<=\zs\i*\ze"  contains=cppClass
+syn match	cppClassName		"\(^\s*\<\(class\|struct\)\>\s*\)\@<=\zs\i*\ze" contains=cppClass
+hi cppClassName	ctermfg=15 ctermbg=234
+
 syn keyword	cStorageClass		typename
 syn match	cppStorageClass       	"<[^>]*\zs\(class\|typename\)"
 
-hi cppBigClass	ctermfg=185
-hi cppClass	ctermfg=185
 
 
 syn match       Brace                   "{\|}\|!"
@@ -179,7 +183,7 @@ hi cBigFunction		ctermfg=258 ctermbg=233
 "hi cFunctionbg		ctermbg=234
 
 syn match	cFunction     contains=cType "\(^\s*\i\(\i\|[*&<> \t]\)\+\)\@<=\<\i\+\ze\(\s*(\(\i\|[*&,<>[\] \t]\)*)\s*\(const\s*\)\?[:{]\)"
-hi cFunction	ctermfg=221	ctermbg=16
+hi cFunction	ctermfg=15	ctermbg=16
 " ctor
 syn match	CTOR		contains=cType                 "\(^\s*\(explicit\s*\)\?\(\i\+\s*::\s*\)\=\)\@<=\~\?\<\i\+\ze\s*(\(\i\|[*&,<>[\] ]\)*)\s*\(:\s*\i\+\|{\)"
 hi 		CTOR		ctermfg=230
