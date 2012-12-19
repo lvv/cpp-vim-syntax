@@ -29,7 +29,7 @@ syn keyword cppOperator		and bitor or xor compl bitand and_eq or_eq xor_eq not n
 syn match cppCast		"\<\(const\|static\|dynamic\|reinterpret\)_cast\s*<"me=e-1
 syn match cppCast		"\<\(const\|static\|dynamic\|reinterpret\)_cast\s*$"
 syn keyword cppStorageClass	mutable
-syn keyword cppStructure	class typename namespace
+syn keyword cppStructure	typename namespace
 syn keyword cppNumber		NPOS
 syn keyword cppBoolean		true false
 
@@ -61,7 +61,7 @@ let b:current_syntax = "cpp"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" lvv
 syn clear	  cppStorageClass
-syn keyword	cppStorageClass	static register auto volatile extern const extern external void explicit virtual
+syn keyword	cppStorageClass	static register auto volatile extern const extern external void explicit virtual constexpr
 
 
 """"""""""""""""""""""""""""""""" general keywords
@@ -85,11 +85,13 @@ hi cppOut		ctermfg=105
 """""""""""""""""""""""""""""""" Structures
 syn clear	cStructure
 syn clear	cppStructure	
-syn keyword	cStructure	class struct union enum typedef
-syn keyword	cppStructure	class struct union enum typedef
+syn keyword	cStructure	union enum typedef
+
+hi def link cStatement		Structure
+hi def link cppStatement	Structure
 hi Structure	ctermfg=44
 
-syn match	cppTemplate	"\<template\s*<\(\i\|\d\|\s\|,\)*>"
+syn match	cppTemplate	"\<template\s*<\(\i\|\d\|\s\|,\|=\)*>"
 syn keyword	cppTemplate	template
 hi cppTemplate	ctermfg=100
 """""""""""""""""""""""""""""""  Statement
@@ -111,7 +113,7 @@ hi MacroFunction	ctermfg=39
 
 """"""""""""""""""""""""""""""" Types
 syn keyword	cType           string vector deque queue vector array list T iterator pair tuple set map multiset multimap unordered_map unordered_set
-syn keyword	cType           vint vuint vlong vulong dint duint dlong dulong vS dS  S vdouble vfloat ddouble dfloat
+syn keyword	cType           size_type difference_type pointer const_pointer reference const_reference value_type
 syn keyword	cType           ostream istream stringstream ofstream ifstream  ifstream oftstream  ios_base
 syn match	cType           "\<\(\i\+\(_t\|_iterator\|_tag\)\|Q\i\+\)\>\(\s*(\)\@<!"
 syn match	cType           "\<\i\+::type\>"
@@ -126,8 +128,8 @@ hi cppType	ctermfg=72
 syn clear	  cStorageClass
 "syn clear	  cppStorageClass
 
-syn keyword	  cStorageClass	inline virtual export static register auto volatile extern const void explicit using typename
-syn match	  cStorageClass	"\<\(std::\|lvv::\)"
+syn keyword	  cStorageClass	inline virtual export static register auto volatile extern const void explicit using
+syn match	  cStorageClass	"\<\(std::\|lvv::\|sto::\)"
 syn match	  cStorageClass	"\<__attribute__\s*((\s*\i\+\s*))"
 
 hi StorageClass	ctermfg=65
@@ -140,17 +142,16 @@ hi Number	ctermfg=147
 hi cppBoolean	ctermfg=147
 
 """""""""""""""""""""""""""""""""
-syn match	cppBigClass          	contains=cStructure       "\(^\(class\|struct\)\s\+\)\@<=\<\i\+\ze\s*\(:\s*\i\+\|{\|<\)"
-"syn match	cppClass              	contains=cStructure   "\(^\s\+\(class\|struct\)\s\+\)\@<=\<\i\+\ze\s*\(:\s*\i\+\|{\)"
-syn match	cppClass              	contains=cStructure   "\(^\s\+\(class\|struct\)\s\+\)\@<=\<\i\+\ze\s*\(:\s*\i\+\|{\|<\)"
-hi cppBigClass	ctermfg=194
-hi cppClass	ctermfg=194
+syn match	cppClass		">\s*\zs\<\(class\|struct\)\>"
+syn match	cppClass		"\(^\s*\zs\<\(class\|struct\)\)\>"
+syn keyword	cStorageClass		typename
+syn match	cppStorageClass       	"<[^>]*\zs\(class\|typename\)"
 
-syn match       Assign                   "=\|+=\|-=\|*=\|/=\|%="
-hi 		Assign			ctermfg=155
+hi cppBigClass	ctermfg=185
+hi cppClass	ctermfg=185
+
 
 syn match       Brace                   "{\|}\|!"
-syn match       cConditional                   "==\|!="
 "hi 		Brace	ctermfg=208
 hi 		Brace	ctermfg=196
 
@@ -158,6 +159,13 @@ syn match       Paren                   "(\|)"
 "hi 		Paren	ctermfg=186
 
 hi 		Paren	ctermfg=165
+
+
+" order inportant
+syn match       Assign                   "=\|\(+=\)\|\(-=\)\|\(*=\)\|\(/=\)\|\(%=\)"
+hi 		Assign			ctermfg=155
+syn match       cConditional             "\(==\)\|\(!=\)\|\(>=\)\|\(<=\)"
+
 
 "syn match Quote /\"/
 "hi Quote	ctermfg=222
@@ -177,12 +185,26 @@ syn match	CTOR		contains=cType                 "\(^\s*\(explicit\s*\)\?\(\i\+\s*
 hi 		CTOR		ctermfg=230
 
 " does not work with \i\+:: 
-syn match	Member		contains=cType   	"\(^\s*\(\i\|[*& \t<>]\)\+\(\i\+\s*::\s*\)\?\)\@<=\<\i\+\ze\s*<\s*\i\+\s*>\s*(\(\i\|[*&,<>[\] \t]\)*)\s*[:{]"
-"syn match	Member		contains=cType   	"\(^\s*\(\i\|[*& \t<>]\)\+\(\i\+\s*::\s*\)\?\)\@<=\<\i\+\ze\s*<\s*\i\+\s*>\s*(\(\i\|[*&,<>[\] \t]\)*)\s*\(const\s*\)\?[:{]"
+"syn match	Member		contains=cType   	"\(^\s*\(\i\|[*& \t<>]\)\+\(\i\+\s*::\s*\)\?\)\@<=\<\i\+\ze\s*\(<\s*\i\+\s*>\s*\)\?(\(\i\|[*&,<>=:[\]]\|\d\|\s\)*)\s*\(const\s*\)\?[:{]"
+"syn  match	Member		contains=cType   	"\(^\s*\(\i\|[*& \t<>]\)\+\(\i\+\s*::\s*\)\?\)\@<=\<\i\+\ze\s*  <\s*\i\+\s*>\s*    (\(\i\|[*&,<>  [\] \t]\)*)\s*\(const\s*\)\?[:{]"
+"syn  match	Member		contains=cType   	"\(^\s*\(\i\|[*& \t<>]\|\s+\)\+\(\i\+\s*::\s*\)\?\)\@<=\<\i\+\ze\s*<\s*\i\+\s*>\s*(\(\i\|[*&,<>[\] \t]\)*)\s*\(const\s*\)\?[:{]"
+syn  match	Member		contains=cType   	"\(^\s*\(\i\|[*& \t<>]\|\s+\)\+\(\i\+\s*::\s*\)\?\)\@<=\<\i\+\ze\s*<\s*\i\+\s*>\s*(\i\+.*)\s*\(const\s*\)\?[:{]"
 
 syn match	cppTemplate	contains=cType		"\(^\s*\(\i\|[*& \t<>]\)\+\(\i\+\s*::\s*\)\?\<\i\+\s*\)\@<=<\s*\i\+\s*>\ze\s*(\(\i\|[*&,<>[\] \t]\)*)\s*[:{]"
 hi 		Member		ctermfg=254
 "
 
-syn keyword	cRepeat		ALL itALL pALL  iALL jALL  FOR iFOR jFOR kFOR mFOR tFOR REP ROF LLA
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""               SCC           """"""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+syn keyword	cRepeat		ALL itALL pALL qALL pLLA
+syn keyword	cRepeat		iALL jALL kALL lALL mALL nALL cALL xALL
+syn keyword	cRepeat		FOR iFOR jFOR kFOR nFOR mFOR tFOR REP ROF LLA
+
+""""""""""""""""""""""""""""""" SCC Types
+syn keyword	cType          idx cint
+syn keyword	cType          vint vuint vlong vulong        dint duint dlong dulong
+syn keyword	cType          vstr dstr  str
+syn keyword	cType          vdouble vfloat ddouble dfloat
 " vim: ts=8
