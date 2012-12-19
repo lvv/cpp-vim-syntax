@@ -142,16 +142,16 @@ hi Number	ctermfg=147
 hi cppBoolean	ctermfg=147
 
 """""""""""""""""""""""""""""""""
-syn match	cppClass		">\s*\zs\<\(class\|struct\)\>"
+syn match	cppClass		"\(>\s*\)\@<=\zs\<\(class\|struct\)\>"
 syn match	cppClass		"\(^\s*\zs\<\(class\|struct\)\)\>"
 hi cppClass	ctermfg=217
 
-syn match	cppClassName		"\(>\s*\<\(class\|struct\)\>\s*\)\@<=\zs\I\i*\ze"  contains=cppClass
+syn match	cppClassName		"\(>\s*\<\(class\|struct\)\>\s*\)\@<=\zs\I\i*\ze" contains=cppClass
 syn match	cppClassName		"\(^\s*\<\(class\|struct\)\>\s*\)\@<=\zs\I\i*\ze" contains=cppClass
 hi cppClassName	ctermfg=15 ctermbg=234
 
 syn keyword	cStorageClass		typename
-syn match	cppStorageClass       	"<[^>]*\zs\(class\|typename\)"
+syn match	cppStorageClass       	"[<,]\s*\zs\(class\|typename\)"
 
 
 
