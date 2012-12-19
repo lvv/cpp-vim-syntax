@@ -61,7 +61,7 @@ let b:current_syntax = "cpp"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" lvv
 syn clear	  cppStorageClass
-syn keyword	cppStorageClass	static register auto volatile extern const extern external void explicit virtual constexpr
+syn keyword	cppStorageClass	typedef static register auto volatile extern const extern external void explicit virtual constexpr
 
 
 """"""""""""""""""""""""""""""""" general keywords
@@ -85,7 +85,7 @@ hi cppOut		ctermfg=105
 """""""""""""""""""""""""""""""" Structures
 syn clear	cStructure
 syn clear	cppStructure	
-syn keyword	cStructure	union enum typedef
+syn keyword	cStructure	union enum 
 
 hi def link cStatement		Structure
 hi def link cppStatement	Structure
@@ -132,7 +132,7 @@ syn keyword	  cStorageClass	inline virtual export static register auto volatile 
 syn match	  cStorageClass	"\<\(std::\|lvv::\|sto::\)"
 syn match	  cStorageClass	"\<__attribute__\s*((\s*\i\+\s*))"
 
-hi StorageClass	ctermfg=65
+hi StorageClass	ctermfg=58
 
 hi String	ctermfg=69
 hi String	ctermbg=233
@@ -144,10 +144,10 @@ hi cppBoolean	ctermfg=147
 """""""""""""""""""""""""""""""""
 syn match	cppClass		">\s*\zs\<\(class\|struct\)\>"
 syn match	cppClass		"\(^\s*\zs\<\(class\|struct\)\)\>"
-hi cppClass	ctermfg=185
+hi cppClass	ctermfg=217
 
-syn match	cppClassName		"\(>\s*\<\(class\|struct\)\>\s*\)\@<=\zs\i*\ze"  contains=cppClass
-syn match	cppClassName		"\(^\s*\<\(class\|struct\)\>\s*\)\@<=\zs\i*\ze" contains=cppClass
+syn match	cppClassName		"\(>\s*\<\(class\|struct\)\>\s*\)\@<=\zs\I\i*\ze"  contains=cppClass
+syn match	cppClassName		"\(^\s*\<\(class\|struct\)\>\s*\)\@<=\zs\I\i*\ze" contains=cppClass
 hi cppClassName	ctermfg=15 ctermbg=234
 
 syn keyword	cStorageClass		typename
