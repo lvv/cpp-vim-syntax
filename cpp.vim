@@ -61,7 +61,7 @@ let b:current_syntax = "cpp"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" lvv
 syn clear	  cppStorageClass
-syn keyword	cppStorageClass	typedef static register auto volatile extern const extern external void explicit virtual constexpr
+syn keyword	cppStorageClass	typedef static register auto volatile extern const extern external explicit virtual constexpr
 
 
 """"""""""""""""""""""""""""""""" general keywords
@@ -112,8 +112,8 @@ syn match	MacroFunction          	"\(^\s*#\s*define\s\+\)\@<=\<\i\+\ze\s*("
 hi MacroFunction	ctermfg=39
 
 """"""""""""""""""""""""""""""" Types
-syn keyword	cType           string vector deque queue vector array list T iterator pair tuple set map multiset multimap unordered_map unordered_set
-syn keyword	cType           size_type difference_type pointer const_pointer reference const_reference value_type
+syn keyword	cType           void size_type difference_type pointer const_pointer reference const_reference value_type
+syn keyword	cppType         string vector deque queue vector array list T iterator pair tuple set map multiset multimap unordered_map unordered_set
 syn keyword	cType           ostream istream stringstream ofstream ifstream  ifstream oftstream  ios_base
 syn match	cType           "\<\(\i\+\(_t\|_iterator\|_tag\)\|Q\i\+\)\>\(\s*(\)\@<!"
 syn match	cType           "\<\i\+::type\>"
@@ -128,7 +128,7 @@ hi cppType	ctermfg=72
 syn clear	  cStorageClass
 "syn clear	  cppStorageClass
 
-syn keyword	  cStorageClass	inline virtual export static register auto volatile extern const void explicit using
+syn keyword	  cStorageClass	inline virtual export static register auto volatile extern const explicit using
 syn match	  cStorageClass	"\<\(std::\|lvv::\|sto::\)"
 syn match	  cStorageClass	"\<__attribute__\s*((\s*\i\+\s*))"
 
@@ -142,13 +142,13 @@ hi Number	ctermfg=147
 hi cppBoolean	ctermfg=147
 
 """""""""""""""""""""""""""""""""
-syn match	cppClass		"\(>\s*\)\@<=\zs\<\(class\|struct\)\>"
-syn match	cppClass		"\(^\s*\zs\<\(class\|struct\)\)\>"
-hi cppClass	ctermfg=217
+"syn match	BigClass		"\(>\s*\)\@<=\zs\<\(class\|struct\)\>"
+syn match	BigClass		"\(\(^\|;\|>\)\s*\zs\<\(class\|struct\)\)\>"
+hi BigClass	ctermfg=169 
 
-syn match	cppClassName		"\(>\s*\<\(class\|struct\)\>\s*\)\@<=\zs\I\i*\ze" contains=cppClass
-syn match	cppClassName		"\(^\s*\<\(class\|struct\)\>\s*\)\@<=\zs\I\i*\ze" contains=cppClass
-hi cppClassName	ctermfg=15 ctermbg=234
+syn match	BigClassName		"\(>\s*\<\(class\|struct\)\>\s*\)\@<=\zs\I\i*\ze" contains=BigClass
+syn match	BigClassName		"\(^\s*\<\(class\|struct\)\>\s*\)\@<=\zs\I\i*\ze" contains=BigClass
+hi BigClassName	ctermfg=15 ctermbg=234
 
 syn keyword	cStorageClass		typename
 syn match	cppStorageClass       	"[<,]\s*\zs\(class\|typename\)"
@@ -188,10 +188,6 @@ hi cFunction	ctermfg=15	ctermbg=16
 syn match	CTOR		contains=cType                 "\(^\s*\(explicit\s*\)\?\(\i\+\s*::\s*\)\=\)\@<=\~\?\<\i\+\ze\s*(\(\i\|[*&,<>[\] ]\)*)\s*\(:\s*\i\+\|{\)"
 hi 		CTOR		ctermfg=230
 
-" does not work with \i\+:: 
-"syn match	Member		contains=cType   	"\(^\s*\(\i\|[*& \t<>]\)\+\(\i\+\s*::\s*\)\?\)\@<=\<\i\+\ze\s*\(<\s*\i\+\s*>\s*\)\?(\(\i\|[*&,<>=:[\]]\|\d\|\s\)*)\s*\(const\s*\)\?[:{]"
-"syn  match	Member		contains=cType   	"\(^\s*\(\i\|[*& \t<>]\)\+\(\i\+\s*::\s*\)\?\)\@<=\<\i\+\ze\s*  <\s*\i\+\s*>\s*    (\(\i\|[*&,<>  [\] \t]\)*)\s*\(const\s*\)\?[:{]"
-"syn  match	Member		contains=cType   	"\(^\s*\(\i\|[*& \t<>]\|\s+\)\+\(\i\+\s*::\s*\)\?\)\@<=\<\i\+\ze\s*<\s*\i\+\s*>\s*(\(\i\|[*&,<>[\] \t]\)*)\s*\(const\s*\)\?[:{]"
 syn  match	Member		contains=cType   	"\(^\s*\(\i\|[*& \t<>]\|\s+\)\+\(\i\+\s*::\s*\)\?\)\@<=\<\i\+\ze\s*<\s*\i\+\s*>\s*(\i\+.*)\s*\(const\s*\)\?[:{]"
 
 syn match	cppTemplate	contains=cType		"\(^\s*\(\i\|[*& \t<>]\)\+\(\i\+\s*::\s*\)\?\<\i\+\s*\)\@<=<\s*\i\+\s*>\ze\s*(\(\i\|[*&,<>[\] \t]\)*)\s*[:{]"
