@@ -96,9 +96,6 @@ syn keyword	cppTemplate	template
 hi cppTemplate	ctermfg=100
 """""""""""""""""""""""""""""""  Statement
 "syn clear	cRepeat
-syn keyword	cRepeat		FOR FORi REP FORitc FORitr
-hi cRepeat	ctermfg=198
-
 hi cConditional ctermfg=214
 hi cppConditional ctermfg=214
 
@@ -111,10 +108,17 @@ hi cppIncluded		ctermfg=39
 syn match	MacroFunction          	"\(^\s*#\s*define\s\+\)\@<=\<\i\+\ze\s*("
 hi MacroFunction	ctermfg=39
 
-""""""""""""""""""""""""""""""" Types
+""""""""""""""""""""""""""""""" STL Types
 syn keyword	cType           void size_type difference_type pointer const_pointer reference const_reference value_type
 syn keyword	cppType         string vector deque queue vector array list T iterator pair tuple set map multiset multimap unordered_map unordered_set
 syn keyword	cType           ostream istream stringstream ofstream ifstream  ifstream oftstream  ios_base
+
+"""""""""""""""""""""""""""""""" OpencCV Types
+syn keyword	cType           Mat Mat_  Mat1b Mat1f Mat3b Mat3f Matx
+syn keyword	cType           Point Point_ Size Size_ Rect Rect_ Scalar Scalar_
+syn keyword	cType           Ptr uchar
+
+"""""""""""""""""""""""""""""""" Misc Types
 syn match	cType           "\<\(\i\+\(_t\|_iterator\|_tag\)\|Q\i\+\)\>\(\s*(\)\@<!"
 syn match	cType           "\<\i\+::type\>"
 syn keyword	cppType		bool wchar_t qreal
@@ -124,14 +128,10 @@ hi cType	ctermfg=72
 hi cType_t	ctermfg=72
 hi cppType	ctermfg=72
 
-"syn clear	cppStorageClass
 syn clear	  cStorageClass
-"syn clear	  cppStorageClass
-
 syn keyword	  cStorageClass	inline virtual export static register auto volatile extern const explicit using
-syn match	  cStorageClass	"\<\(std::\|lvv::\|sto::\)"
+syn match	  cStorageClass	"\<\(std::\|lvv::\|sto::\:cv::\|cuda::\)"
 syn match	  cStorageClass	"\<__attribute__\s*((\s*\i\+\s*))"
-
 hi StorageClass	ctermfg=58
 
 hi String	ctermfg=69
@@ -142,13 +142,13 @@ hi Number	ctermfg=147
 hi cppBoolean	ctermfg=147
 
 """""""""""""""""""""""""""""""""
-"syn match	BigClass		"\(>\s*\)\@<=\zs\<\(class\|struct\)\>"
-syn match	BigClass		"\(\(^\|;\|>\)\s*\zs\<\(class\|struct\)\)\>"
-hi BigClass	ctermfg=169 
+"syn match	BigClass	"\(>\s*\)\@<=\zs\<\(class\|struct\)\>"
+syn match	BigClass	"\(\(^\|;\|>\)\s*\zs\<\(class\|struct\)\)\>"
+hi		BigClass	ctermfg=169 
 
-syn match	BigClassName		"\(>\s*\<\(class\|struct\)\>\s*\)\@<=\zs\I\i*\ze" contains=BigClass
-syn match	BigClassName		"\(^\s*\<\(class\|struct\)\>\s*\)\@<=\zs\I\i*\ze" contains=BigClass
-hi BigClassName	ctermfg=15 ctermbg=234
+syn match	BigClassName	"\(^\s*\<\(class\|struct\)\>\s*\)\@<=\zs\I\i*\ze" contains=BigClass
+hi		BigClassName	ctermfg=46
+"ctermbg=16
 
 syn keyword	cStorageClass		typename
 syn match	cppStorageClass       	"[<,]\s*\zs\(class\|typename\)"
@@ -156,12 +156,9 @@ syn match	cppStorageClass       	"[<,]\s*\zs\(class\|typename\)"
 
 
 syn match       Brace                   "{\|}\|!"
-"hi 		Brace	ctermfg=208
 hi 		Brace	ctermfg=196
 
 syn match       Paren                   "(\|)"
-"hi 		Paren	ctermfg=186
-
 hi 		Paren	ctermfg=165
 
 
@@ -176,22 +173,25 @@ syn match       cConditional             "\(==\)\|\(!=\)\|\(>=\)\|\(<=\)"
 
 """""""""""""""""""""""""""""""  BIG (something that starts from 1st col)
 " GOOD! start with \@<= ,  end with \ze
-syn match	cBigFunction     contains=cType "\(^\i\(\i\|[*&<> \t]\)\+\)\@<=\<\i\+\ze\(\s*(\(\i\|[*&,<>[\] \t]\)*)\s*{\)"
-hi cBigFunction		ctermfg=258 ctermbg=233
+syn match	cBigFunction	contains=cType "\(^\i\(\i\|[*&<> \t]\)\+\)\@<=\<\i\+\ze\(\s*(\(\i\|[*&,<>[\] \t]\)*)\s*{\)"
+hi		cBigFunction	ctermfg=226
+"ctermbg=16
 """"""""""""""""""""""""""""""""""""""""""""""""""""""
 "syn match		cFunctionbg             contains=ALL  "^\i\+\s*[*&<> \t]*\s*\<\i\+\s*(\(\i\|[*&,<>[\] \t]\)*)\s*{\zs.*"
 "hi cFunctionbg		ctermbg=234
 
-syn match	cFunction     contains=cType "\(^\s*\i\(\i\|[*&<> \t]\)\+\)\@<=\<\i\+\ze\(\s*(\(\i\|[*&,<>[\] \t]\)*)\s*\(const\s*\)\?[:{]\)"
-hi cFunction	ctermfg=15	ctermbg=16
+syn match	cFunction	contains=cType	      	"\(^\s*\i\(\i\|[*&<> \t]\)\+\)\@<=\<\i\+\ze\(\s*(\(\i\|[*&,<>[\] \t]\)*)\s*\(const\s*\)\?[:{]\)"
+hi		cFunction	ctermfg=226 
+"hi		cFunction	ctermfg=226  ctermbg=16
 " ctor
-syn match	CTOR		contains=cType                 "\(^\s*\(explicit\s*\)\?\(\i\+\s*::\s*\)\=\)\@<=\~\?\<\i\+\ze\s*(\(\i\|[*&,<>[\] ]\)*)\s*\(:\s*\i\+\|{\)"
-hi 		CTOR		ctermfg=230
+syn match	CTOR		contains=cType          "\(^\s*\(explicit\s*\)\?\(\i\+\s*::\s*\)\=\)\@<=\~\?\<\i\+\ze\s*(\(\i\|[*&,<>[\] ]\)*)\s*\(:\s*\i\+\|{\)"
+hi 		CTOR		ctermfg=280
 
-syn  match	Member		contains=cType   	"\(^\s*\(\i\|[*& \t<>]\|\s+\)\+\(\i\+\s*::\s*\)\?\)\@<=\<\i\+\ze\s*<\s*\i\+\s*>\s*(\i\+.*)\s*\(const\s*\)\?[:{]"
 
 syn match	cppTemplate	contains=cType		"\(^\s*\(\i\|[*& \t<>]\)\+\(\i\+\s*::\s*\)\?\<\i\+\s*\)\@<=<\s*\i\+\s*>\ze\s*(\(\i\|[*&,<>[\] \t]\)*)\s*[:{]"
-hi 		Member		ctermfg=254
+
+syn  match	Member		contains=cType   	"\(^\s*\(\i\|[*& \t<>]\|\s+\)\+\(\i\+\s*::\s*\)\?\)\@<=\<\i\+\ze\s*<\s*\i\+\s*>\s*(\i\+.*)\s*\(const\s*\)\?[:{]"
+hi 		Member		ctermfg=208
 "
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -200,7 +200,10 @@ hi 		Member		ctermfg=254
 
 syn keyword	cRepeat		ALL itALL pALL qALL pLLA
 syn keyword	cRepeat		iALL jALL kALL lALL mALL nALL cALL xALL
-syn keyword	cRepeat		FOR iFOR jFOR kFOR nFOR mFOR tFOR REP ROF LLA
+syn keyword	cRepeat		FOR iFOR jFOR kFOR lFOR nFOR mFOR tFOR ijFOR REP ROF LLA
+
+syn keyword	cRepeat		FOR FORi REP FORitc FORitr
+hi cRepeat	ctermfg=198
 
 """"""""""""""""""""""""""""""" SCC Types
 syn keyword	cType          idx cint
